@@ -3,7 +3,6 @@ package com.apple.industries.service;
 import com.apple.industries.data.Order;
 import com.apple.industries.data.OrderItem;
 import com.apple.industries.data.PackageType;
-import com.apple.industries.utils.AppleIndustriesUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -18,10 +17,6 @@ public class FreePrizeService {
 
     public FreePrizeService() {
         this.lastWinningTime = LocalDateTime.MIN;
-    }
-
-    public Boolean test() {
-        return AppleIndustriesUtils.randomBoolean();
     }
 
     public Order raffle(final Order order) {
