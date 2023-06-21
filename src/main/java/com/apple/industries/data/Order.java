@@ -1,15 +1,12 @@
 package com.apple.industries.data;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.persistence.AttributeConverter;
+import com.apple.industries.data.converters.JpaJsonConverter;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
@@ -25,8 +22,16 @@ public class Order {
 
     @Convert(converter = JpaJsonConverter.class)
     private List<OrderItem> items;
+    private LocalDate orderDate;
+    private Boolean hasWonFreePrints;
 
     public Order() {
+    }
+
+    public Order(UUID customerId, List<OrderItem> items) {
+        this.customerId = customerId;
+        this.items = items;
+        this.orderDate = LocalDate.now();
     }
 
     public LocalDate getOrderDate() {
@@ -35,16 +40,6 @@ public class Order {
 
     public void setOrderDate(LocalDate orderDate) {
         this.orderDate = orderDate;
-    }
-
-    private LocalDate orderDate;
-
-    private Boolean hasWonFreePrints;
-
-    public Order(UUID customerId, List<OrderItem> items) {
-        this.customerId = customerId;
-        this.items = items;
-        this.orderDate = LocalDate.now();
     }
 
     /**
@@ -108,26 +103,3 @@ public class Order {
 }
 
 
-class JpaJsonConverter implements AttributeConverter<Object, String> {
-    private static final ObjectMapper om = new ObjectMapper();
-
-    @Override
-    public String convertToDatabaseColumn(Object attribute) {
-        try {
-            return om.writeValueAsString(attribute);
-        } catch (JsonProcessingException ex) {
-            //log.error("Error while transforming Object to a text datatable column as json string", ex);
-            return null;
-        }
-    }
-
-    @Override
-    public Object convertToEntityAttribute(String dbData) {
-        try {
-            return om.readValue(dbData, Object.class);
-        } catch (IOException ex) {
-            //log.error("IO exception while transforming json text column in Object property", ex);
-            return null;
-        }
-    }
-}

@@ -7,6 +7,8 @@ import com.apple.industries.repository.OrderRepository;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,8 +23,11 @@ public class OrderService {
         this.orderRepository = orderRepository;
     }
 
-    public BigDecimal calculateTaxForMont(final int month) {
-        final var allOrderByMonth = this.orderRepository.findAllByOrderDate_Month(month);
+    public BigDecimal calculateTaxForMont(final int month, final int year) {
+        final var startOfTheMonth = LocalDate.of(year, month, 1);
+        final var endOfTheMonth = LocalDate.of(year, month, 1)
+                .with(TemporalAdjusters.lastDayOfMonth());
+        final var allOrderByMonth = this.orderRepository.findAllByOrderDateBetween(startOfTheMonth, endOfTheMonth);
         if (allOrderByMonth.size() == 0)
             return BigDecimal.ZERO;
         final var allOrdersByPackageType = allOrderByMonth.stream()

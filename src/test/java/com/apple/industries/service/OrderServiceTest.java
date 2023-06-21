@@ -5,18 +5,21 @@ import com.apple.industries.data.OrderItem;
 import com.apple.industries.data.PackageType;
 import com.apple.industries.repository.OrderRepository;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 class OrderServiceTest {
@@ -31,12 +34,14 @@ class OrderServiceTest {
     public void shouldReturnZeroWhenNoSalesWasMadeOnInputMonth() {
 
         // given
-        Mockito.when(this.orderRepository.findAllByOrderDate_Month(Mockito.eq(6))).thenReturn(
+        final var start = LocalDate.of(2023, 5, 1);
+        final var end = LocalDate.of(2023, 5, 31);
+        when(this.orderRepository.findAllByOrderDateBetween(any(), any())).thenReturn(
                 Collections.emptyList()
         );
 
         // act
-        final var actual = this.orderService.calculateTaxForMont(6);
+        final var actual = this.orderService.calculateTaxForMont(5, 2023);
 
         // assert
         assertNotNull(actual);
@@ -48,7 +53,9 @@ class OrderServiceTest {
     public void shouldReturnTheTaxValue() {
 
         // given
-        Mockito.when(this.orderRepository.findAllByOrderDate_Month(Mockito.eq(6))).thenReturn(
+        final var start = LocalDate.of(2023, 1, 1);
+        final var end = LocalDate.of(2023, 1, 31);
+        when(this.orderRepository.findAllByOrderDateBetween(eq(start), eq(end))).thenReturn(
                 List.of(
                         new Order(UUID.randomUUID(),
                                 List.of(
@@ -68,7 +75,7 @@ class OrderServiceTest {
         );
 
         // act
-        final var actual = this.orderService.calculateTaxForMont(6);
+        final var actual = this.orderService.calculateTaxForMont(1, 2023);
 
         // assert
         assertNotNull(actual);

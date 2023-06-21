@@ -9,7 +9,8 @@ public class MirrorService {
 
     /**
      * Returns a reflective text {@code String}.
-     *  text: "apple industries" -> result: "industries apple"
+     * text: "apple industries" -> result: "industries apple"
+     *
      * @param text the {@code String} to be reversed
      * @return the reversed {@code String}
      * @throws java.lang.IllegalArgumentException when input is empty or null
