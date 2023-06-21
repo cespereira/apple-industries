@@ -51,7 +51,7 @@ class FreePrizeServiceTest {
         // assert
         assertNotNull(actualOrderAlreadyParticipated);
         assertFalse(actualOrderAlreadyParticipated.isEligible());
-        assertFalse(actualOrderAlreadyParticipated.isHasWonFreePrints());
+        assertFalse(actualOrderAlreadyParticipated.getHasWonFreePrints());
 
         assertNotNull(actualOrderWithMoreThanOneItem);
         assertFalse(actualOrderWithMoreThanOneItem.isEligible());
@@ -74,7 +74,7 @@ class FreePrizeServiceTest {
 
         // assert
         assertNotNull(actual);
-        assertFalse(actual.isHasWonFreePrints());
+        assertFalse(actual.getHasWonFreePrints());
     }
 
 
@@ -98,9 +98,9 @@ class FreePrizeServiceTest {
 
         //assert
         assertNotNull(winner);
-        assertTrue(winner.isHasWonFreePrints());
+        assertTrue(winner.getHasWonFreePrints());
         assertNotNull(loser);
-        assertFalse(loser.isHasWonFreePrints());
+        assertFalse(loser.getHasWonFreePrints());
 
     }
 

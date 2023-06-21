@@ -8,10 +8,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
-class AppleIndustriesServiceTest {
+class MirrorServiceTest {
 
     @Autowired
-    private AppleIndustriesService service;
+    private MirrorService service;
 
     @Test
     public void shouldThrowIllegalExceptionWhenInputIsNull() {
