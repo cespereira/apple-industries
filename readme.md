@@ -23,7 +23,7 @@ command line.
 This codebase has tests, using Junit 5 and Mockito. The code can be tested using the follow gradle command:
 
 ```shell
-`./gradlew test
+./gradlew test
 ```
 
 ## Challenge 1
